@@ -1,5 +1,4 @@
 const fileInput = document.getElementById("fileInput");
-const image = new Image();
 
 // 監聽 input 欄位的改變
 fileInput.addEventListener("change", handleFileSelect);
@@ -7,17 +6,17 @@ fileInput.addEventListener("change", handleFileSelect);
 function handleFileSelect(event) {
   const file = event.target.files[0];
   const reader = new FileReader();
+  const image = new Image();
 
   // 當讀取完成後執行以下程式碼
   reader.addEventListener("load", (event) => {
     // 當圖片載入完成後執行以下程式碼
-    image.addEventListener("load", () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
 
-      // 縮小圖片尺寸
-      const MAX_WIDTH = 500; // 設定最大寬度
-      const MAX_HEIGHT = 500; // 設定最大高度
+    image.addEventListener("load", () => {
+      const MAX_WIDTH = 500;
+      const MAX_HEIGHT = 500;
 
       if (image.width > MAX_WIDTH || image.height > MAX_HEIGHT) {
         const scale = Math.min(
@@ -47,20 +46,17 @@ function handleFileSelect(event) {
         canvas.height
       );
 
-      // 儲存高畫質圖片和低畫質圖片
       const highQualityImage = dataURItoBlob(image.src);
-
       const lowQualityImage = dataURItoBlob(
         canvas.toDataURL("image/jpeg", 0.1)
       );
 
-      // document.getElementById("previewImg").innerHTML = "";
-
-      // 儲存高畫質圖片並使用原檔案名稱
       saveImage(highQualityImage, file.name);
-
-      // 儲存低畫質圖片並在檔名加上"_lqip"
       saveImage(lowQualityImage, `${file.name.split(".")[0]}_lqip.jpg`);
+
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+
+      image.removeEventListener("load", {});
     });
 
     image.src = event.target.result;
@@ -90,7 +86,7 @@ function saveImage(blob, filename) {
   // 將下載連結加入到頁面中，並觸發點擊事件下載檔案
   a.href = url;
   document.body.appendChild(a);
-  // a.click();
+  a.click();
   document.body.removeChild(a);
 
   // 解除 URL 物件的暫時性綁定
