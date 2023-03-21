@@ -6,14 +6,21 @@
     <link rel="stylesheet" href="./main.css" />
   </head>
   <body>
-    <!-- 預設效果演示 -->
+    <!-- 
+                預設效果演示 
+    lazy     -> 類別 套用LQIP效果
+    data-src -> 高畫質圖片 (XXX.jpg)
+    src      -> 低畫質圖片 (XXX_lqip.jpg)
+    
+    -->
     <img
-      class="lazy lightbox"
+      class="lazy"
       src="./media03_lqip.jpg"
       data-src="./media03.jpg"
       alt="LQIP Demo"
       style="width: 500px"
     />
+
     <p>將網路速度調整為3G時效果較為明顯</p>
 
     <input type="file" id="fileInput" />
