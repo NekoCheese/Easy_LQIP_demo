@@ -90,7 +90,7 @@ function saveImage(blob, filename) {
   // 將下載連結加入到頁面中，並觸發點擊事件下載檔案
   a.href = url;
   document.body.appendChild(a);
-  a.click();
+  // a.click();
   document.body.removeChild(a);
 
   // 解除 URL 物件的暫時性綁定
