@@ -19,8 +19,6 @@ function handleFileSelect(event) {
       const MAX_WIDTH = 500; // 設定最大寬度
       const MAX_HEIGHT = 500; // 設定最大高度
 
-      console.log(image);
-
       if (image.width > MAX_WIDTH || image.height > MAX_HEIGHT) {
         const scale = Math.min(
           MAX_WIDTH / image.width,
@@ -53,9 +51,10 @@ function handleFileSelect(event) {
       const highQualityImage = dataURItoBlob(image.src);
 
       const lowQualityImage = dataURItoBlob(
-        // clg
         canvas.toDataURL("image/jpeg", 0.1)
       );
+
+      // document.getElementById("previewImg").innerHTML = "";
 
       // 儲存高畫質圖片並使用原檔案名稱
       saveImage(highQualityImage, file.name);
@@ -91,13 +90,19 @@ function saveImage(blob, filename) {
   // 將下載連結加入到頁面中，並觸發點擊事件下載檔案
   a.href = url;
   document.body.appendChild(a);
-  a.click();
+  // a.click();
   document.body.removeChild(a);
 
   // 解除 URL 物件的暫時性綁定
   URL.revokeObjectURL(url);
 
-  const previewImg = new Image();
-  previewImg.src = URL.createObjectURL(blob);
-  document.getElementById("previewImg").appendChild(previewImg);
+  const previewImg = document.getElementById("previewImg");
+  while (previewImg.childNodes.length >= 2) {
+    previewImg.removeChild(previewImg.firstChild);
+  }
+  
+  // 新增新的圖片到預覽區塊中
+  const img = new Image();
+  img.src = URL.createObjectURL(blob);
+  previewImg.appendChild(img);
 }
